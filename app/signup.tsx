@@ -1,7 +1,7 @@
 import { supabase } from "@/lib/supabase";
 import { router } from "expo-router";
 import { useState } from "react";
-import { Alert, Button, TextInput, View } from "react-native";
+import { Button, TextInput, View } from "react-native";
 
 export default function SignUp() {
     const [email, setEmail] = useState('');
@@ -14,9 +14,8 @@ export default function SignUp() {
         });
 
         if (error) {
-            Alert.alert('Sign Up Failed', error.message);
         } else {
-            router.replace('/'); // Redirect to home after sign up
+            router.replace('/');
         }
     }
     return (
