@@ -1,7 +1,8 @@
 import { useIsFocused } from '@react-navigation/native';
 import { BarcodeScanningResult, CameraType, CameraView, useCameraPermissions } from 'expo-camera';
+import { useRouter } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, Button, SafeAreaView, Text, View } from 'react-native';
+import { Button, SafeAreaView, Text, View } from 'react-native';
 
 export default function scanScreen() {
   const [permission, requestPermission] = useCameraPermissions();
@@ -9,6 +10,7 @@ export default function scanScreen() {
   const [scannedData, setScannedData] = useState<string | null>(null);
   const [cameraActive, setCameraActive] = useState(false);
   const [facing, setFacing] = useState<CameraType>('back');
+  const router = useRouter();
 
   type Barcode = {
     data: string;
@@ -45,14 +47,11 @@ export default function scanScreen() {
       const { data } = scanningResult;
       setScannedData(data);
 
-      Alert.alert('Scanned', `QR Data: ${data}`, [
-        {
-          text: 'Ok',
-          onPress: () => {
-            setTimeout(() => scannedRef.current = false);
-        },
-        },
-      ]);
+      {/* here navigate to prompt screen */}
+      router.push({
+          pathname: '/input',
+          params: { scannedData: data },
+      });
     };
 
   if (!permission) {
