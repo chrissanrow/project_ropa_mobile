@@ -1,5 +1,6 @@
 import { useIsFocused } from '@react-navigation/native';
 import { BarcodeScanningResult, CameraType, CameraView, useCameraPermissions } from 'expo-camera';
+import { router } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import { Alert, Button, SafeAreaView, Text, View } from 'react-native';
 
@@ -14,7 +15,7 @@ export default function adminScan() {
     data: string;
     type: string;
   };
-  
+
   type BarcodeScannedEvent = {
     barcodes: Barcode[];
   };
@@ -50,10 +51,11 @@ export default function adminScan() {
           text: 'Ok',
           onPress: () => {
             setTimeout(() => scannedRef.current = false);
+            router.push(`../progress/${data}`)
         },
-        },
-      ]);
-    };
+      },
+    ]);
+  };
 
   if (!permission) {
     return ( 
@@ -72,31 +74,31 @@ export default function adminScan() {
     );
   }
 
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        {cameraActive && isFocused && (
-          <CameraView
-              style={{ flex: 1}}
-              onBarcodeScanned={handleBarcodeScanned}
-              barcodeScannerSettings={{
-                barcodeTypes: ['qr'],
-              }}
-          />
-        )}
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      {cameraActive && isFocused && (
+        <CameraView
+            style={{ flex: 1}}
+            onBarcodeScanned={handleBarcodeScanned}
+            barcodeScannerSettings={{
+              barcodeTypes: ['qr'],
+            }}
+        />
+      )}
 
-        <View style={{ padding: 16 }}>
-          <Button
-              title={cameraActive ? 'Stop Camera' : 'Start Camera'}
-              onPress={handleToggleCamera}
-          />
-          {scannedData && (
-            <View>
-            <Text style={{ marginTop: 10, textAlign: 'center' }}>
-              Last scanned: {scannedData}
-            </Text>
-              </View>
-          )}
-        </View>
-      </SafeAreaView>
-    );
+      <View style={{ padding: 16 }}>
+        <Button
+            title={cameraActive ? 'Stop Camera' : 'Start Camera'}
+            onPress={handleToggleCamera}
+        />
+        {scannedData && (
+          <View>
+          <Text style={{ marginTop: 10, textAlign: 'center' }}>
+            Last scanned: {scannedData}
+          </Text>
+            </View>
+        )}
+      </View>
+    </SafeAreaView>
+  );
 }

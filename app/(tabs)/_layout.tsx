@@ -66,16 +66,11 @@ const _layout = () => {
           href: null
         }}
       />
-      <Tabs.Screen
-        name="home"
-        options={{
-          title: "Home",
-          headerShown: false,
-        }}
-      />
+      <Tabs.Screen name="progress-test" options={{ title: "Progress Test", headerShown: false, href: isAdmin ? '/progress-test' : null }} />
       <Tabs.Screen name="admin_scan" options={{ title: "Scan", headerShown: false, href: isAdmin ? '/admin_scan' : null }} />
       <Tabs.Screen name="qr_gen" options={{ title: "Create QR", headerShown: false, href: isAdmin ? '/qr_gen' : null }} />
       <Tabs.Screen name="admin_profile" options={{ title: "Admin Profile", headerShown: false, href: isAdmin ? '/admin_profile' : null }} />
+      <Tabs.Screen name="home" options={{ title: "Home", headerShown: false, href: !isAdmin ? '/home' : null }} />
       <Tabs.Screen name="donor_scan" options={{ title: "Scan", headerShown: false, href: !isAdmin ? '/donor_scan' : null }} />
       <Tabs.Screen name="donor_profile" options={{ title: "Donor Profile", headerShown: false, href: !isAdmin ? '/donor_profile' : null }} />
     </Tabs>

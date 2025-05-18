@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
-import { supabase } from '../../lib/supabase';
+import { View, Text } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { supabase } from '../../lib/supabase'
 
 type DonatedItem = {
   item_name: string;

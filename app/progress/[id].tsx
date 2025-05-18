@@ -3,10 +3,9 @@ import { useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
   
-const DonationDetails = () => {
+const ProgressDetails = () => {
     const { id } = useLocalSearchParams<{ id: string }>();
     const [progressData, setProgressData] = useState<string | null>(null);
-    const [currentStep, setCurrentStep] = useState<string | null>(null);
 
     const fetchDonationDetails = async () => {
         const {data, error} = await supabase
@@ -20,18 +19,21 @@ const DonationDetails = () => {
         }
         console.log(data);
         setProgressData(data[0].status);
-        
-        if (progressData === "dropped_off_at_donation_center") {
-          setCurrentStep("Dropped off at Donation Center");
-      } else if (progressData === "at_processing_center") {
-          setCurrentStep("At Processing Center");
-      } else if (progressData === "mobile_closet_popup") {
-          setCurrentStep("At Mobile Closet Popup");
-      } else if (progressData === "fulfilled_to_a_client") {
-          setCurrentStep("Successfully Distributed!");
-      }
     }
 
+    const handleChangeProgress = async (newStatus: string) => {
+        const { error } = await supabase
+            .from('donations')
+            .update({ status: newStatus })
+            .eq('qr_code_identifier', id);
+
+        setProgressData(newStatus);
+        
+        if (error) {
+            console.error('Error updating donation progress:', error);
+        }
+    }
+    
     useEffect(() => {
         console.log(id);
         fetchDonationDetails();
@@ -39,9 +41,9 @@ const DonationDetails = () => {
 
     return (
     <View className="pt-48 pl-10 pr-10 flex-1">
-        <View className= "bg-gray-200 p-5 text-9xl text-textprimary rounded-[20px] mb-5">
+        <TouchableOpacity className={`${progressData === "dropped_off_at_donation_center" ? "bg-lightprimary-100" : "bg-gray-200"} p-5 text-9xl text-textprimary rounded-[20px] mb-5`} onPress={() => handleChangeProgress("dropped_off_at_donation_center")}>
             <Text>Dropped off at donation center</Text>
-        </View>
+        </TouchableOpacity>
         <TouchableOpacity className={`${progressData === "at_processing_center" ? "bg-lightprimary-100" : "bg-gray-200"} p-5 text-9xl text-textprimary rounded-[20px] mb-5`} onPress={() => handleChangeProgress("at_processing_center")}>
             <Text>At Processing Center</Text>
         </TouchableOpacity>
@@ -55,4 +57,4 @@ const DonationDetails = () => {
     )
 }
 
-export default DonationDetails
+export default ProgressDetails
