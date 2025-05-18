@@ -1,6 +1,6 @@
-import { View, Text } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import { supabase } from '../../lib/supabase'
+import React, { useEffect, useState } from 'react';
+import { Text, View } from 'react-native';
+import { supabase } from '../../lib/supabase';
 
 type DonatedItem = {
   item_name: string;
@@ -28,8 +28,6 @@ export async function fetchDonatedItems(): Promise<SimplifiedItem[]> {
         console.error('Error fetching donations:', error);
         return [];
     }
-
-    console.log("Raw data from Supabase:", data);
 
     return data.map((item) => ({
         name: item.item_name || "Unamed Item",
