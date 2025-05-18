@@ -1,7 +1,8 @@
-import { View, Text, Image, ScrollView } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import { supabase } from '../../lib/supabase'
+import { useIsFocused } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { Image, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { supabase } from '../../lib/supabase';
 
 type DonatedItem = {
   item_name: string;
@@ -47,10 +48,11 @@ const DonationCard = ({ name, status }: SimplifiedItem) => {
 
 export default function home() {
     const [items, setItems] = useState<SimplifiedItem[]>([]);
-    
+    const isFocused = useIsFocused();
+
     useEffect (() => {
         fetchDonatedItems().then(setItems);
-    }, []);
+    }, [isFocused]);
 
     const donationCards = [];
     for (let i = 0; i < items.length; i++) {

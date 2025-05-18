@@ -66,6 +66,13 @@ const _layout = () => {
         }}
       />
       <Tabs.Screen
+        name="input"
+        options={{
+          headerShown: false,
+          href: null
+        }}
+      />
+      <Tabs.Screen
         name="progress-test"
         options={{
           headerShown: false,

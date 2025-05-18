@@ -1,8 +1,9 @@
 import { supabase } from "@/lib/supabase";
 import React from "react";
-import { Button, Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
-const profile = () => {
+const donorProfile = () => {
+
   async function handleLogout() {
     try {
       await supabase.auth.refreshSession();
@@ -18,10 +19,23 @@ const profile = () => {
 
   return (
     <View className="flex-1 justify-center items-center">
-      <Text>profile</Text>
-      <Button title="Logout" onPress={handleLogout}></Button>
+      <Text className="text-2xl mb-2 font-text">
+        Items that you donated: 12.
+      </Text>
+      <Text className="text-2xl mb-2 font-text">
+        Items in progress: 5.
+      </Text>
+      <Text className="text-2xl mb-2 font-text">
+        Items delivered: 7.
+      </Text>
+      <Text className="text-2xl mb-2 font-text">
+        Pounds of clothing saved: 20.
+      </Text>
+      <TouchableOpacity className="bg-lightsecondary-100 rounded-[10px] px-40 p-4 justify-content items-center" onPress={handleLogout}>
+          <Text className="text-2xl font-bold mb-2 font-primary">Logout</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-export default profile;
+export default donorProfile;
