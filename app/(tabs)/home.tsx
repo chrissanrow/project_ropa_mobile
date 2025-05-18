@@ -1,6 +1,6 @@
 import { useIsFocused } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, Text, View } from 'react-native';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { supabase } from '../../lib/supabase';
 
@@ -8,13 +8,30 @@ type DonatedItem = {
   item_name: string;
   donations: {
     status: string;
+    updated_at: string;
   } | null;
 };
 
 type SimplifiedItem = {
   status: string;
   name: string;
+  time: string;
 };
+
+const formatTimestamp = (timestamp: string) => {
+    const date = new Date(timestamp);
+    
+    return new Intl.DateTimeFormat("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      timeZoneName: "short",
+    }).format(date);
+  };
 
 export async function fetchDonatedItems(): Promise<SimplifiedItem[]> {
     const { data, error } = await supabase
@@ -22,7 +39,8 @@ export async function fetchDonatedItems(): Promise<SimplifiedItem[]> {
     .select(`
       item_name,
       donations:donation_id (
-        status
+        status,
+        updated_at
       )
     `) as unknown as { data: DonatedItem[]; error: any };
 
@@ -30,19 +48,21 @@ export async function fetchDonatedItems(): Promise<SimplifiedItem[]> {
         console.error('Error fetching donations:', error);
         return [];
     }
-
+    
     return data.map((item) => ({
         name: item.item_name || "Unamed Item",
         status: item.donations?.status || "Status Unavailable",
+        time: item.donations?.updated_at || "Time Unavailable",
   }));
 }
 
-const DonationCard = ({ name, status }: SimplifiedItem) => {
+const DonationCard = ({ name, status, time }: SimplifiedItem) => {
     return (
-        <View className='py-6 px-6 bg-gray-200 rounded-[20px] w-[90%] mb-3'>
+        <TouchableOpacity className='py-6 px-6 bg-gray-200 rounded-[20px] w-[90%] mb-3'>
             <Text className='text-2xl font-semibold font-primary'>{name}</Text>
             <Text className='text-xl text-gray-500 font-text'>{status}</Text>
-        </View>
+            <Text className='text-sm text-gray-400 font-text'>{formatTimestamp(time)}</Text>
+        </TouchableOpacity>
     )
 }
 
@@ -58,6 +78,7 @@ export default function home() {
     for (let i = 0; i < items.length; i++) {
         let cardStatus = ""
         let cardName = ""
+        let cardTime = ""
         if (items[i].status === "dropped_off_at_donation_center") {
             cardStatus = "Dropped off at Donation Center"
         } else if (items[i].status === "at_processing_center") {
@@ -75,8 +96,10 @@ export default function home() {
             cardName = items[i].name
         }
 
+        cardTime = items[i].time;
+
         donationCards.push(
-            <DonationCard key={i} name={cardName} status={cardStatus} />
+            <DonationCard key={i} name={cardName} status={cardStatus} time={cardTime} />
         )
     }
     return (
