@@ -1,12 +1,13 @@
-import { View, Text } from 'react-native'
+import { View, Text, Image, ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type DonatedItem = {
-  status_from: string;
-  items: {
-    item_name: string;
-  };
+  item_name: string;
+  donations: {
+    status: string;
+  } | null;
 };
 
 type SimplifiedItem = {
@@ -16,11 +17,11 @@ type SimplifiedItem = {
 
 export async function fetchDonatedItems(): Promise<SimplifiedItem[]> {
     const { data, error } = await supabase
-    .from('donation_journey_updates')
+    .from('items')
     .select(`
-      status_from,
-      items (
-        item_name
+      item_name,
+      donations:donation_id (
+        status
       )
     `) as unknown as { data: DonatedItem[]; error: any };
 
@@ -29,22 +30,17 @@ export async function fetchDonatedItems(): Promise<SimplifiedItem[]> {
         return [];
     }
 
-    return data.map((update) => ({
-        status: update.status_from,
-        name: update.items!.item_name,
+    return data.map((item) => ({
+        name: item.item_name || "Unamed Item",
+        status: item.donations?.status || "Status Unavailable",
   }));
 }
 
-type DonationCardProps = {
-    name: string;
-    status: string;
-};
-
-const DonationCard = ({ name, status }: DonationCardProps) => {
+const DonationCard = ({ name, status }: SimplifiedItem) => {
     return (
-        <View className='py-6 px-6 bg-gray-200 rounded-[20px] w-[90%]'>
-            <Text className='text-2xl font-semibold'>{name}</Text>
-            <Text className='text-xl text-gray-500'>{status}</Text>
+        <View className='py-6 px-6 bg-gray-200 rounded-[20px] w-[90%] mb-3'>
+            <Text className='text-2xl font-semibold font-primary'>{name}</Text>
+            <Text className='text-xl text-gray-500 font-text'>{status}</Text>
         </View>
     )
 }
@@ -71,20 +67,37 @@ export default function home() {
         } else {
             cardStatus = "Status Unavailable"
         }
-        cardName = items[i].name
+        if (items[i].name.length == 0){
+            cardName = "Unnamed Donation"
+        } else {
+            cardName = items[i].name
+        }
 
         donationCards.push(
-            <DonationCard name={cardName} status={cardStatus} />
+            <DonationCard key={i} name={cardName} status={cardStatus} />
         )
     }
     return (
-        <View className="flex-1 justify-start pt-24 items-center">
-            <Text className='text-4xl font-bold py-2 items-start'>Recent Donations</Text>
-            { donationCards.length > 0 ? (
-                donationCards
-            ) : (
-                <Text>No donations yet.</Text>
-            )}
-        </View>
+        <SafeAreaView className='flex-1 bg-white'>
+            <ScrollView className="flex-1" contentContainerStyle={{
+                justifyContent: 'flex-start',
+                paddingTop: 30,
+            }} >
+                <View className='items-center'>
+                    <Image
+                        source={require('../../assets/images/project-ropa-logo.png')}
+                        className=" object-contain mb-5"
+                    />
+                </View>
+                <Text className='text-4xl font-bold px-8 py-2 mb-2 font-accent'>Recent Donations</Text>
+                <View className='items-center'>
+                    { donationCards.length > 0 ? (
+                        donationCards
+                    ) : (
+                        <Text>No donations yet.</Text>
+                    )}
+                </View>
+            </ScrollView>
+        </SafeAreaView>
     )
 }
