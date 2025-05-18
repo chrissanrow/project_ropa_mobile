@@ -30,8 +30,6 @@ export async function fetchDonatedItems(): Promise<SimplifiedItem[]> {
         return [];
     }
 
-    console.log("Raw data from Supabase:", data);
-
     return data.map((item) => ({
         name: item.item_name || "Unamed Item",
         status: item.donations?.status || "Status Unavailable",
