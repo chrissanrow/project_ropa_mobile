@@ -5,6 +5,13 @@ module.exports = {
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
+      fontFamily: {
+        sans: "Roboto_400Regular",
+        primary: "Roboto_600SemiBold",
+        secondary: "RobotoSlab_400Regular",
+        text: "Roboto_400Regular",
+        accent: "Roboto_500Medium",
+      },
       colors: {
         textprimary: "#030014",
         textsecondary: "#151312",
