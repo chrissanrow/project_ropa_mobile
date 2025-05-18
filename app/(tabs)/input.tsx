@@ -41,7 +41,7 @@ export default function InputScreen() {
       console.log('Scanned:', scannedData);
       console.log('Name:', name);
       handleAddItem(name);
-      router.back();
+      router.replace('/donor_scan');
     };
 
     return (
