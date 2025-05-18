@@ -1,5 +1,6 @@
+import { useIsFocused } from '@react-navigation/native';
 import { BarcodeScanningResult, CameraType, CameraView, useCameraPermissions } from 'expo-camera';
-import React, { useCallback, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Alert, Button, SafeAreaView, Text, View } from 'react-native';
 
 export default function scanScreen() {
@@ -18,38 +19,46 @@ export default function scanScreen() {
     barcodes: Barcode[];
   };
 
-  {/* TENTATIVEEEEE toggle camera, need to connect this with scanning an item */}
+  const scannedRef = useRef(false);
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (!isFocused) {
+      setCameraActive(false);
+      scannedRef.current = false;
+      setScannedData(null);
+    }
+  }, [isFocused]);
+
   const handleToggleCamera = () => {
     setCameraActive(prev => !prev);
-    setScanned(false);
+    scannedRef.current = false;
     setScannedData(null);
   };
 
-  const handleBarcodeScanned = useCallback(
-    (scanningResult: BarcodeScanningResult) => {
-      if (scanned) {
-        return;
-      }
+  const handleBarcodeScanned = (scanningResult: BarcodeScanningResult) => {
+      if (scannedRef.current) return;
+
+      scannedRef.current = true;
 
       const { data } = scanningResult;
-      setScanned(true);
       setScannedData(data);
 
       Alert.alert('Scanned', `QR Data: ${data}`, [
         {
           text: 'Ok',
           onPress: () => {
-            setScanned(false)
-          },
+            setTimeout(() => scannedRef.current = false);
+        },
         },
       ]);
-    }, []
-  );
+    };
 
   if (!permission) {
     return ( 
       <SafeAreaView>
-        <Text>Requesting camera permissions...</Text>
+        <Text style={{ textAlign: "center" }}>Requesting camera permissions...</Text>
       </SafeAreaView>
     );
   }
@@ -65,7 +74,7 @@ export default function scanScreen() {
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        {cameraActive && (
+        {cameraActive && isFocused && (
           <CameraView
               style={{ flex: 1}}
               onBarcodeScanned={handleBarcodeScanned}
@@ -81,9 +90,11 @@ export default function scanScreen() {
               onPress={handleToggleCamera}
           />
           {scannedData && (
+            <View>
             <Text style={{ marginTop: 10, textAlign: 'center' }}>
               Last scanned: {scannedData}
             </Text>
+              </View>
           )}
         </View>
       </SafeAreaView>
