@@ -3,7 +3,7 @@ import { BarcodeScanningResult, CameraType, CameraView, useCameraPermissions } f
 import React, { useEffect, useRef, useState } from 'react';
 import { Alert, Button, SafeAreaView, Text, View } from 'react-native';
 
-export default function scanScreen() {
+export default function donorScan() {
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
   const [scannedData, setScannedData] = useState<string | null>(null);
