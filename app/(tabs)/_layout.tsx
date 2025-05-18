@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 
 const _layout = () => {
-
   const getUserId = async () => {
     const { data: { user }, error } = await supabase.auth.getUser();
     if (error) {
@@ -30,21 +29,7 @@ const _layout = () => {
             }}
         />
         <Tabs.Screen
-            name="index"
-            options={{
-            title: 'Index',
-            headerShown: false,
-            }}
-        />
-        <Tabs.Screen
             name="admin_scan"
-            options={{
-            title: 'Scan',
-            headerShown: false,
-            }}
-        />
-        <Tabs.Screen
-            name="donor_scan"
             options={{
             title: 'Scan',
             headerShown: false,
