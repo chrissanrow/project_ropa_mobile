@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 
 const _layout = () => {
+
   const getUserId = async () => {
     const { data: { user }, error } = await supabase.auth.getUser();
     if (error) {
