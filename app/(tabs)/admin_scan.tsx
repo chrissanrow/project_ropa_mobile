@@ -1,12 +1,12 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 
-const scan = () => {
+const admin_scan = () => {
   return (
     <View>
-      <Text>scan</Text>
+      <Text>admin-scan</Text>
     </View>
   )
 }
 
-export default scan
+export default admin_scan
