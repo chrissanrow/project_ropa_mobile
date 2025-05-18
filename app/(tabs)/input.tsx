@@ -1,7 +1,7 @@
 import { supabase } from '@/lib/supabase';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 
 export default function InputScreen() {
@@ -45,10 +45,12 @@ export default function InputScreen() {
     };
 
     return (
-        <View>
-            <Text>Give your item a name</Text>
-            <TextInput placeholder="Add a name" value={name} onChangeText={setName}/>
-            <Button title="Submit" onPress={handleSubmit}/>
+        <View className="pt-48 pl-10 pr-10 flex-1">
+            <Text className='text-2xl font-bold mb-2 font-primary'>Give your item a name!</Text>
+            <TextInput className="p-5 text-2xl text-textprimary bg-gray-200 rounded-[20px] mb-5" placeholder="Name" placeholderTextColor="#000000" value={name} onChangeText={setName}/>
+            <TouchableOpacity className="bg-lightsecondary-100 rounded-[20px] p-4 justify-content items-center" onPress={handleSubmit}>
+                <Text>Submit</Text>
+            </TouchableOpacity>
         </View>
     )
 }
