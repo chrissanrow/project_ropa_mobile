@@ -3,10 +3,10 @@ import React, { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
 
 type DonatedItem = {
-  status_from: string;
-  items: {
-    item_name: string;
-  };
+  item_name: string;
+  donations: {
+    status: string;
+  } | null;
 };
 
 type SimplifiedItem = {
@@ -16,11 +16,11 @@ type SimplifiedItem = {
 
 export async function fetchDonatedItems(): Promise<SimplifiedItem[]> {
     const { data, error } = await supabase
-    .from('donation_journey_updates')
+    .from('items')
     .select(`
-      status_from,
-      items (
-        item_name
+      item_name,
+      donations:donation_id (
+        status
       )
     `) as unknown as { data: DonatedItem[]; error: any };
 
@@ -29,18 +29,15 @@ export async function fetchDonatedItems(): Promise<SimplifiedItem[]> {
         return [];
     }
 
-    return data.map((update) => ({
-        status: update.status_from,
-        name: update.items!.item_name,
+    console.log("Raw data from Supabase:", data);
+
+    return data.map((item) => ({
+        name: item.item_name || "Unamed Item",
+        status: item.donations?.status || "Status Unavailable",
   }));
 }
 
-type DonationCardProps = {
-    name: string;
-    status: string;
-};
-
-const DonationCard = ({ name, status }: DonationCardProps) => {
+const DonationCard = ({ name, status }: SimplifiedItem) => {
     return (
         <View className='py-6 px-6 bg-gray-200 rounded-[20px] w-[90%]'>
             <Text className='text-2xl font-semibold'>{name}</Text>
@@ -71,10 +68,14 @@ export default function home() {
         } else {
             cardStatus = "Status Unavailable"
         }
-        cardName = items[i].name
+        if (items[i].name.length == 0){
+            cardName = "Unnamed Donation"
+        } else {
+            cardName = items[i].name
+        }
 
         donationCards.push(
-            <DonationCard name={cardName} status={cardStatus} />
+            <DonationCard key={i} name={cardName} status={cardStatus} />
         )
     }
     return (
