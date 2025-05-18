@@ -57,16 +57,16 @@ export default function scanScreen() {
 
   if (!permission) {
     return ( 
-      <SafeAreaView>
-        <Text style={{ textAlign: "center" }}>Requesting camera permissions...</Text>
+      <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={{ textAlign: "center"}}>Requesting camera permissions...</Text>
       </SafeAreaView>
     );
   }
 
   if (!permission.granted) {
     return (
-      <View>
-        <Text style={{ textAlign: "center" }}>We need your permission to show the camera</Text>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={{ textAlign: "center", marginBottom: 20  }}>We need your permission to show the camera</Text>
         <Button onPress={requestPermission} title="grant permission" />
       </View>
     );

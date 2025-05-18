@@ -1,14 +1,23 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, TextInput } from 'react-native';
+import { Button, SafeAreaView, Text, TextInput, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 
 export default function QRGeneratorScreen() {
-    const [text, setText] = useState('placeholder-item');
+    const [text, setText] = useState('{}');
+
+    const generateNewCode = () => {
+        const randomId = Math.random().toString(36).slice(2, 10);
+        const data = {
+            item_id: randomId,
+            type: 'inventory',
+        };
+        setText(JSON.stringify(data));
+    }
 
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Text>
-                Enter text to generate QR code
+                Click to generate QR code
             </Text>
             <TextInput
         style={{
@@ -28,6 +37,11 @@ export default function QRGeneratorScreen() {
         size={200}
         backgroundColor="white"
       />
+
+      <View style={{ marginTop: 30 }}>
+        <Button title="Generate New QR Code" onPress={generateNewCode} />
+      </View>
+
         </SafeAreaView>
     )
 }
