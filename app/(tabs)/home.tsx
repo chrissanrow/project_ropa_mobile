@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
-import { supabase } from '../../lib/supabase';
+import { View, Text, Image, ScrollView } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { supabase } from '../../lib/supabase'
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type DonatedItem = {
   item_name: string;
@@ -37,7 +38,7 @@ export async function fetchDonatedItems(): Promise<SimplifiedItem[]> {
 
 const DonationCard = ({ name, status }: SimplifiedItem) => {
     return (
-        <View className='py-6 px-6 bg-gray-200 rounded-[20px] w-[90%]'>
+        <View className='py-6 px-6 bg-gray-200 rounded-[20px] w-[90%] mb-3'>
             <Text className='text-2xl font-semibold'>{name}</Text>
             <Text className='text-xl text-gray-500'>{status}</Text>
         </View>
@@ -77,13 +78,26 @@ export default function home() {
         )
     }
     return (
-        <View className="flex-1 justify-start pt-24 items-center">
-            <Text className='text-4xl font-bold py-2 items-start'>Recent Donations</Text>
-            { donationCards.length > 0 ? (
-                donationCards
-            ) : (
-                <Text>No donations yet.</Text>
-            )}
-        </View>
+        <SafeAreaView className='flex-1 bg-white'>
+            <ScrollView className="flex-1" contentContainerStyle={{
+                justifyContent: 'flex-start',
+                paddingTop: 30,
+            }} >
+                <View className='items-center'>
+                    <Image
+                        source={require('../../assets/images/project-ropa-logo.png')}
+                        className=" object-contain mb-5"
+                    />
+                </View>
+                <Text className='text-4xl font-bold px-8 py-2 mb-2'>Recent Donations</Text>
+                <View className='items-center'>
+                    { donationCards.length > 0 ? (
+                        donationCards
+                    ) : (
+                        <Text>No donations yet.</Text>
+                    )}
+                </View>
+            </ScrollView>
+        </SafeAreaView>
     )
 }
