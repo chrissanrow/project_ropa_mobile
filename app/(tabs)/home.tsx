@@ -39,8 +39,8 @@ export async function fetchDonatedItems(): Promise<SimplifiedItem[]> {
 const DonationCard = ({ name, status }: SimplifiedItem) => {
     return (
         <View className='py-6 px-6 bg-gray-200 rounded-[20px] w-[90%] mb-3'>
-            <Text className='text-2xl font-semibold'>{name}</Text>
-            <Text className='text-xl text-gray-500'>{status}</Text>
+            <Text className='text-2xl font-semibold font-primary'>{name}</Text>
+            <Text className='text-xl text-gray-500 font-text'>{status}</Text>
         </View>
     )
 }
@@ -89,7 +89,7 @@ export default function home() {
                         className=" object-contain mb-5"
                     />
                 </View>
-                <Text className='text-4xl font-bold px-8 py-2 mb-2'>Recent Donations</Text>
+                <Text className='text-4xl font-bold px-8 py-2 mb-2 font-accent'>Recent Donations</Text>
                 <View className='items-center'>
                     { donationCards.length > 0 ? (
                         donationCards
