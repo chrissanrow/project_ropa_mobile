@@ -14,12 +14,13 @@ export default function InputScreen() {
 
     const handleAddItem = async (newItem: string) => {
         const { data: { session } } = await supabase.auth.getSession();
-      setSession(session);
+        setSession(session);
 
-      if (!session) {
-        router.replace("/login"); // Redirect if not logged in
-        return;
-      } 
+        if (!session) {
+            router.replace("/login"); // Redirect if not logged in
+            return;
+        } 
+        
         const { data, error } = await supabase
             .from('items')
             .insert([

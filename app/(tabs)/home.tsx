@@ -34,6 +34,13 @@ const formatTimestamp = (timestamp: string) => {
   };
 
 export async function fetchDonatedItems(): Promise<SimplifiedItem[]> {
+    const { data: {session}} = await supabase.auth.getSession();
+
+    if (!session) {
+        console.error('Error fetching user');
+        return [];
+    }
+
     const { data, error } = await supabase
     .from('items')
     .select(`
@@ -42,7 +49,7 @@ export async function fetchDonatedItems(): Promise<SimplifiedItem[]> {
         status,
         updated_at
       )
-    `) as unknown as { data: DonatedItem[]; error: any };
+    `).eq('user_id', session.user.id) as unknown as { data: DonatedItem[]; error: any };
 
     if (error) {
         console.error('Error fetching donations:', error);
