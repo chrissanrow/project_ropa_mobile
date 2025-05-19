@@ -1,50 +1,24 @@
-# Welcome to your Expo app 👋
+### Summary
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is a React Native + Expo mobile project intended to support the needs of Project Ropa (NOTE: as of 5/18/25, Project Ropa has decided not to utilize this service). The app allows donors to track their donations using a QR code based system and add new items through a scanner in app. On the admin side, the nonprofit can update the item status at each point of the distribution process and generate new QR codes for new items.
 
-## Get started
+### Motivation
 
-1. Install dependencies
+Project Ropa is a nonprofit organization that distributes donated clothing items and hygiene kits through their mobile closet. Currently, they have no way for donors to keep track of the status of their donated items and no effective way to deal with duplicate entries. The NPO desired a mobile solution that addresses these issues. Our team connected with Project Ropa's mission to not only serve our collective community, but do so sustainably and reduce textile waste in this age of fast fashion. We used the themes of the Project Ropa website to create a mobile application that addresses their problem statement, but also align with their image and be easily modified to fit their goals.
 
-   ```bash
-   npm install
-   ```
+### How to Build
 
-2. Start the app
+Since Project Ropa has decided not to go through with this application, it is currently not being deployed. However, you can still simulate it by cloning / forking the repository:
 
-   ```bash
-   npx expo start
-   ```
+ - run npm i within the top-level directory
+ - run npx expo --tunnel
+ - simulate using one of the provided options
 
-In the output, you'll find options to open the app in a
+### Tech Stack
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+This project is built on:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+ - React Native (TypeScript)
+ - TailwindCSS
+ - Expo
+ - Supabase
